@@ -41,7 +41,7 @@ export default class TodoListViewModel extends ListViewModel
     }
     addItem(state, title){
         // Find largest id
-        var id = state.map(v=>v.key).reduce((a, b)=>{return Math.max(a, b)}) + 1;
+        var id = state.map(v=>v.key).reduce((a, b)=>{return Math.max(a, b)}, 0) + 1;
 
         return [
             ...state,
