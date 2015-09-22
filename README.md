@@ -2,7 +2,7 @@
 
 Redux-ViewModel is designed to beautify your code with [React](facebook.github.io/react/) & [Redux](http://rackt.github.io/redux/).
 
-You'll have no need to write action factory and switch-cases to identity actions any more.
+You don't have to write action factory and switch-cases to identity actions any more.
 
 ## Overview ##
 

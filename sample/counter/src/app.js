@@ -58,4 +58,4 @@ var rootViewModel = new RootViewModel();
 
 React.render((
     <Provider viewModel={rootViewModel} viewClass={AppView} />
-), document.getElementById("container"));
+), document.getElementById('container'));
