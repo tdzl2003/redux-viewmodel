@@ -125,6 +125,8 @@ All View-Model class should extend class ViewModel.
 
 Create a root view-model. A new store will be created.
 
+Parameters of constructor may change in future version. Do not use them or change them in your constructor.
+
 #### static get defaultState() ####
 
 Return a default State. Can be overrided. Return `undefined` if not.
@@ -190,7 +192,7 @@ Children of provider will be passed to the component directly.
 
 ### Can I create many root view models? ###
 
-I think you can, but generally you will not need it.
+I think you can, but usually you don't need to.
 
 ### Can I pass view-models as prop of components? ###
 
@@ -207,6 +209,10 @@ Yes. And they can be bind to different view model created from a same root.
 ### Can I use redux-viewmodel with react-native? ###
 
 Yes.
+
+### Can I use redux-viewmodel with angularjs? ###
+
+I think so, but I didn't test it.
 
 ### Can I use redux-viewmodel with react-router? ###
 
@@ -302,3 +308,7 @@ $(function(){
 });
 
 ```
+
+### Can I use redux-viewmodel with xxx or yyy or zzz? ###
+
+I don't know. Try it yourself. Tell me what's happening if any error occured.
