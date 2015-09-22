@@ -182,6 +182,10 @@ A function that return the root component of this application. If viewFactory is
 
 The root state(as props) and the root view model will be passed to viewFactory.
 
+#### prop: children ####
+
+Children of provider will be passed to the component directly.
+
 ## F.A.Q. ##
 
 ### Can I create many root view models? ###
@@ -263,5 +267,38 @@ $(function(){
     </Router>, document.body);
 });
 
+
+```
+
+It's also possible to use same provider by override createElement function of Router, like this:
+
+```javascript
+// Simple site without modify
+class Site extends React.Component
+{
+    render(){
+        return (<div>
+            <NavBar/>
+            {this.props.children}
+            <PageFooter/>
+        </div>);
+    }
+}
+
+function createComponetWithProvider(Component, props){
+    return (<Provider viewClass={Component}
+                      viewModel={RootViewModel.instance}>
+            {props.children}
+        </Provider>);
+}
+
+$(function(){
+    React.render(<Router history={history} createElement={createComponetWithProvider}>
+        <Route path="/" component={Site}>
+            <IndexRoute component={Index}/>
+            <Route path="project" component={Project} />
+        </Route>
+    </Router>, document.body);
+});
 
 ```
