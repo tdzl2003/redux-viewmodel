@@ -201,11 +201,15 @@ A function that return the root component of this application. If viewFactory is
 
 The root state(as props) and the root view model will be passed to viewFactory.
 
+#### prop: children ####
+
+Children of provider will be passed to the component directly.
+
 ## F.A.Q. ##
 
 ### Can I create many root view models? ###
 
-I think you can, but generally you will not need it.
+I think you can, but usually you don't need to.
 
 ### Can I pass view-models as prop of components? ###
 
@@ -229,6 +233,10 @@ Yes. And they can be bind to different view model created from a same root.
 ### Can I use redux-viewmodel with react-native? ###
 
 Yes.
+
+### Can I use redux-viewmodel with angularjs? ###
+
+I think so, but I didn't test it.
 
 ### Can I use redux-viewmodel with react-router? ###
 
@@ -291,3 +299,40 @@ $(function(){
 
 
 ```
+
+It's also possible to use same provider by override createElement function of Router, like this:
+
+```javascript
+// Simple site without modify
+class Site extends React.Component
+{
+    render(){
+        return (<div>
+            <NavBar/>
+            {this.props.children}
+            <PageFooter/>
+        </div>);
+    }
+}
+
+function createComponetWithProvider(Component, props){
+    return (<Provider viewClass={Component}
+                      viewModel={RootViewModel.instance}>
+            {props.children}
+        </Provider>);
+}
+
+$(function(){
+    React.render(<Router history={history} createElement={createComponetWithProvider}>
+        <Route path="/" component={Site}>
+            <IndexRoute component={Index}/>
+            <Route path="project" component={Project} />
+        </Route>
+    </Router>, document.body);
+});
+
+```
+
+### Can I use redux-viewmodel with xxx or yyy or zzz? ###
+
+I don't know. Try it yourself. Tell me what's happening if any error occured.
