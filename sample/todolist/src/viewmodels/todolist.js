@@ -16,6 +16,12 @@ export class TodoItemViewModel extends ViewModel
         let {done, ...other} = state
         return other
     }
+    switch(state){
+        return {
+            ...state,
+            done: !state.done
+        }
+    }
 }
 
 export default class TodoListViewModel extends ListViewModel
@@ -32,6 +38,18 @@ export default class TodoListViewModel extends ListViewModel
                 done: true
             }
         ]
+    }
+    get first(){
+        return this.getSubViewModel("first", TodoItemViewModel, state=>{
+            return state[0];
+        }, (state, newValue)=>{
+            return [newValue, ...(state.slice(1))];
+        })
+    }
+    get last(){
+        return this.getSubViewModel("first", TodoItemViewModel, state=>state[state.length-1], (state, newValue)=>{
+            return [...(state.slice(0, state.length-1)), state];
+        })
     }
     getItem(i){
         return getItemByKey(this.state[i]);
