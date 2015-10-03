@@ -10,6 +10,10 @@ export default class AppView extends React.Component
         var context = this.props.context;
         context.todoList.dispatch("addItem", prompt("Input a title"));
     }
+    switchFirst(){
+        var context = this.props.context;
+        context.todoList.first.dispatch("switch");
+    }
     deleteItem(key){
         var context = this.props.context;
         context.todoList.dispatch("deleteItem", key);
@@ -19,6 +23,7 @@ export default class AppView extends React.Component
         return (
             <div>
                 <button onClick={()=>this.addItem()}>Add</button>
+                <button onClick={()=>this.switchFirst()}>Switch First</button>
                 <ul className="todo-list">
                     {
                         this.props.todoList.map((v)=>{

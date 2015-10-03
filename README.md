@@ -97,7 +97,8 @@ and the state tree will be updated.
 
 ViewModel can have sub-view-models as property. Sub-view-model can be get by call `this.getSubViewModel(name, clazz)`.
 
-Sub-view-model must have exactly same name with state field.
+Name of sub-view-model Does not need to match state field from 0.2.0. You can create alias of a sub-view-model by
+implement a getter that returns a sub-view-model with different getter/reducer.
 
 It doesn't matter that whether you cache the sub-view-model object. It doesn't store any state, instead, it store a
 path from RootViewModel. If the path doesn't exists, any reducer that return a valid value will create the path.
@@ -108,6 +109,8 @@ Sub-view-model will use same store with the root one.
 
 ListViewModel is view-model that operate a Array state. All item in state should be either a object with 'key' property, 
 or a string/number value that mark key of itself. All actions to list should use key to identify items instead of array index.
+
+You can also create sub-view-model alias for ListViewModel from 0.2.0. See 'Switch first' button in 'todolist' for a sample.
 
 ### Provider ###
 
@@ -125,11 +128,21 @@ All View-Model class should extend class ViewModel.
 
 Create a root view-model. A new store will be created.
 
-Parameters of constructor may change in future version. Do not use them or change them in your constructor.
+#### constructor(store, path, getter, reducer) ####
+
+Create a sub view-model. This should be called via ViewModel::getSubViewModel or ListViewModel::getItemByKey.
+
+* store: should as same as the parent view-model.
+
+* path: A array with path from root to this view-model.
+
+* getter(state, name): get sub-state object from state of parent view-model.
+
+* reduceParent(state, newValue, name): reduce state of current view-model in parent state.
 
 #### static get defaultState() ####
 
-Return a default State. Can be overrided. Return `undefined` if not.
+Return a default State. Can be overridden. Return `undefined` if not.
 
 #### get store() ####
 
@@ -139,9 +152,11 @@ Return store instance associated with the view model.
 
 Return state data of the view model.
 
-#### getSubViewModel(name[, clazz]) ####
+#### getSubViewModel(name[, clazz, [getter, reduceParent]]) ####
 
 Create sub-view-model instance of field `name`
+
+See description of `constructor(store, path, getter, reduceParent)` about `getter` and `reduceParent`.
 
 #### dispatch(methodName, ...args) ####
 
@@ -164,9 +179,11 @@ Called before the reducer method is invoked. Path is relative to current view-mo
 
 ### class ListViewModel extends ViewModel ###
 
-#### getItemByKey(key[, clazz]) ####
+#### getItemByKey(key[, clazz, [getter, reduceParent]]) ####
 
 Create sub-view-model instance of item with speficied `key`.
+
+See description of `constructor(store, path, getter, reduceParent)` about `getter` and `reduceParent`.
 
 ### Provider ###
 
@@ -200,7 +217,14 @@ Yes, you can.
 
 ### Can a view-model be associated to two or more state object? ###
 
-No, the path you get a view-model object must exactly match the path in state tree.
+No. Reducer method will called only on one sub-state. You can implement reducer function on parent view-model to do this.
+
+### Can I create a sub-view-model alias? ###
+
+You can since v0.2.0. You can just return another sub-view-model object(which should also be accessible), or return
+a view-model class with specified `getter` and `reducer`.
+
+See 'Switch first' button in 'todolist' for a sample.
 
 ### Can I create many providers? ###
 
