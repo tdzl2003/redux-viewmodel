@@ -206,6 +206,26 @@ No, the path you get a view-model object must exactly match the path in state tr
 
 Yes. And they can be bind to different view model created from a same root.
 
+### Can I use same view-model/component class in different path? ###
+
+Yes, that's the right way to use Redux-ViewModel.
+
+Data of same `class` may use same view-model class, even they are on different path.
+
+For example, if we are writing a site like github, the following path with different value may have same class:
+
+```
+projects, tdzl2003/lua.js
+users, tdzl2003, ownedProjects, tdzl2003/redux-viewmodel
+users, tdzl2003, stars, stewartlord/identicon.js
+users, tdzl2003, contributed, facebook/react-native.js
+```
+
+So they can be visited with same view-model class like `ProjectViewModel`, and be rendered with same component like 'ProjectShortInfo' or 'ProjectDetails'.
+
+Also, you can use same view-model on different components to render/interact differently, but don't use different
+view-model class with same path.
+
 ### Can I use redux-viewmodel with react-native? ###
 
 Yes.
