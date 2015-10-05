@@ -38,6 +38,8 @@ class NumbericView extends React.Component
     }
 }
 
+var rootViewModel = new RootViewModel();
+
 class AppView extends React.Component
 {
     render(){
@@ -45,16 +47,14 @@ class AppView extends React.Component
             <div>
                 <NumbericView value={this.props.counter}/>
                 <button onClick={
-                    ()=>this.props.context.counter.dispatch('increment', 1)
+                    ()=>rootViewModel.counter.dispatch('increment', 1)
                  }>Inc</button>
                 <button onClick={
-                    ()=>this.props.context.counter.dispatch('decrement', 1)
+                    ()=>rootViewModel.counter.dispatch('decrement', 1)
                  }>Dec</button>
             </div>);
     }
 }
-
-var rootViewModel = new RootViewModel();
 
 React.render((
     <Provider viewModel={rootViewModel} viewClass={AppView} />

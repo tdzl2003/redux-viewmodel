@@ -4,6 +4,39 @@ Redux-ViewModel is designed to beautify your code with [React](facebook.github.i
 
 You don't have to write action factory and switch-cases to identity actions any more.
 
+## Changelog ##
+
+### 0.3.0 ###
+
+* Constructor arguments changed.
+
+* ViewModel.state property works fine now.
+
+* Parent state should not change if reducer doesn't change state. This can make view re-render lesser.
+
+* Key will store in a pair of square brackets like '[key]' in path.
+
+* ListViewModel only have different defaultState, all it's method can be accessed in ViewModel.js. You can use ViewModel even if your state is a array.
+
+* Add method `getDefaultSubViewModelClass(name)` and `getDefaultItemClass(key)`. You can override this to provide
+a default class for sub-viewmodel or item-viewmodel
+
+* Add property `name`
+
+* Fix Array.prototype.find on IE9
+
+### 0.2.1 ###
+
+* Fix a bug that provider didn't rerender when use together with react-router
+
+* Known issue: ViewModel.state was broken now.
+
+### 0.2.0 ###
+
+* Add getter/reducer parameter to view model constructor, make's you can create view model alias or special view model like .first/.last
+
+* Known issue: ViewModel.state was broken now.
+
 ## Overview ##
 
 ### Counter demo: ###
@@ -49,6 +82,8 @@ class NumbericView extends React.Component
     }
 }
 
+var rootViewModel = new RootViewModel();
+
 class AppView extends React.Component
 {
     render(){
@@ -56,16 +91,14 @@ class AppView extends React.Component
             <div>
                 <NumbericView value={this.props.counter}/>
                 <button onClick={
-                    ()=>this.props.context.counter.dispatch('increment', 1)
+                    ()=>rootViewModel.counter.dispatch('increment', 1)
                  }>Inc</button>
                 <button onClick={
-                    ()=>this.props.context.counter.dispatch('decrement', 1)
+                    ()=>rootViewModel.counter.dispatch('decrement', 1)
                  }>Dec</button>
             </div>);
     }
 }
-
-var rootViewModel = new RootViewModel();
 
 React.render((
     <Provider viewModel={rootViewModel} viewClass={AppView} />
@@ -112,6 +145,9 @@ or a string/number value that mark key of itself. All actions to list should use
 
 You can also create sub-view-model alias for ListViewModel from 0.2.0. See 'Switch first' button in 'todolist' for a sample.
 
+From 0.3.0, there's no different between ViewModel and ListViewModel except defaultState. You can
+use ViewModel on a array state.
+
 ### Provider ###
 
 Use redux-viewmodel with react, you should use Provider component as root component.
@@ -128,13 +164,13 @@ All View-Model class should extend class ViewModel.
 
 Create a root view-model. A new store will be created.
 
-#### constructor(store, path, getter, reducer) ####
+#### constructor(parent, name, getter, reducer) ####
 
-Create a sub view-model. This should be called via ViewModel::getSubViewModel or ListViewModel::getItemByKey.
+Create a sub view-model. This should be called via ViewModel::getSubViewModel or ViewModel::getItemByKey.
 
-* store: should as same as the parent view-model.
+* parent: parent view-model.
 
-* path: A array with path from root to this view-model.
+* name: Name of this view model.
 
 * getter(state, name): get sub-state object from state of parent view-model.
 
@@ -144,9 +180,29 @@ Create a sub view-model. This should be called via ViewModel::getSubViewModel or
 
 Return a default State. Can be overridden. Return `undefined` if not.
 
+#### getSubViewModelClass(name) ####
+
+Return view-model class for sub-view-model.
+
+#### getItemClass(name) ####
+
+Return view-model class for item.
+
+#### get name() ####
+
+Return name of current view-model class.
+
+#### get key() ####
+
+Return key of current view-model class if the view-model is a item view-model.
+
 #### get store() ####
 
 Return store instance associated with the view model.
+
+#### get path() ####
+
+Return path of current view-model.
 
 #### get state() ####
 
@@ -156,7 +212,13 @@ Return state data of the view model.
 
 Create sub-view-model instance of field `name`
 
-See description of `constructor(store, path, getter, reduceParent)` about `getter` and `reduceParent`.
+See description of `constructor(parent, name, getter, reduceParent)` about `getter` and `reduceParent`.
+
+#### getItemByKey(key[, clazz, [getter, reduceParent]]) ####
+
+Create sub-view-model instance of item with speficied `key`.
+
+See description of `constructor(parent, name, getter, reduceParent)` about `getter` and `reduceParent`.
 
 #### dispatch(methodName, ...args) ####
 
@@ -177,13 +239,9 @@ The generated action is like this:
 
 Called before the reducer method is invoked. Path is relative to current view-model.
 
-### class ListViewModel extends ViewModel ###
+You can override this method to do extra work.
 
-#### getItemByKey(key[, clazz, [getter, reduceParent]]) ####
-
-Create sub-view-model instance of item with speficied `key`.
-
-See description of `constructor(store, path, getter, reduceParent)` about `getter` and `reduceParent`.
+You can also invoke this method to simulate multiple works in a reducer method.
 
 ### Provider ###
 
@@ -218,6 +276,22 @@ Yes, you can.
 ### Can a view-model be associated to two or more state object? ###
 
 No. Reducer method will called only on one sub-state. You can implement reducer function on parent view-model to do this.
+
+You can invoke `_reduce` method to simulate action on multiply sub-view model, like this:
+
+```
+class someListViewModel extends ListViewModel
+{
+    checkAll(state){
+        // run 'check' on each item in a single action.
+        var keys = state.map(v=>v.key)
+        keys.forEach(key=>{
+            state = this._reduce(state, ['['+key+']'], 'check', []);
+        })
+        return state;
+    }
+}
+```
 
 ### Can I create a sub-view-model alias? ###
 

@@ -7,7 +7,6 @@ import {Provider} from 'redux-viewmodel';
 import RootViewModel from './viewmodels/root';
 import AppView from "./views/app";
 
-var rootViewModel = new RootViewModel();
 React.render((
-    <Provider viewModel={rootViewModel} viewClass={AppView} />
+    <Provider viewModel={RootViewModel.instance} viewClass={AppView} />
 ), document.body);
