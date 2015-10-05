@@ -12,7 +12,7 @@ You don't have to write action factory and switch-cases to identity actions any 
 
 * ViewModel.state property works fine now.
 
-* Parent state should not change if reducer doesn't change state. This can make view re-render lesser.
+* Parent state should not change if reducer doesn't change state. This can make view re-render less.
 
 * Key will store in a pair of square brackets like '[key]' in path.
 
