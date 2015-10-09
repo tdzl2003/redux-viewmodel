@@ -6,6 +6,10 @@ You don't have to write action factory and switch-cases to identity actions any 
 
 ## Changelog ##
 
+### 0.3.1 ###
+
+Change dependency of 'react' version to '*' for issue with React 0.14.0
+
 ### 0.3.0 ###
 
 * Constructor arguments changed.
