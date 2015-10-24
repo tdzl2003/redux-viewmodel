@@ -6,9 +6,15 @@ You don't have to write action factory and switch-cases to identity actions any 
 
 ## Changelog ##
 
+### 0.4.0 ###
+
+* Now, return a undefined state will remove self in parent state. Specially in a list. See [#3](https://github.com/tdzl2003/redux-viewmodel/issues/3)
+
+* Fix issue: "0" and 0 was consider as same key in a array before 0.3.1. Now they are not.
+
 ### 0.3.1 ###
 
-Change dependency of 'react' version to '*' for issue with React 0.14.0
+* Change dependency of 'react' version to '*' for issue with React 0.14.0
 
 ### 0.3.0 ###
 

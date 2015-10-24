@@ -1,6 +1,6 @@
 {
   "name": "redux-viewmodel",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "View-Model design based on Redux & React",
   "main": "index.js",
   "repository": "https://github.com/tdzl2003/redux-viewmodel",
@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "react": "*",
-    "redux": "^3.0.0"
+    "redux": "^3.0.4"
   }
 }
