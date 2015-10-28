@@ -6,6 +6,14 @@ You don't have to write action factory and switch-cases to identity actions any 
 
 ## Changelog ##
 
+### 0.4.2 ###
+
+bugfix: state doesn't change sometime when use with react-router.
+
+### 0.4.1 ###
+
+Please skip this version.
+
 ### 0.4.0 ###
 
 * Now, return a undefined state will remove self in parent state. Specially in a list. See [#3](https://github.com/tdzl2003/redux-viewmodel/issues/3)
